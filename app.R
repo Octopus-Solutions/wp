@@ -1,6 +1,6 @@
 library(shiny)
 library(ggplot2)
-library(plotly)
+
 library(tidyr)
 
 library(lubridate)
@@ -18,7 +18,7 @@ ui <- fluidPage(
         sidebarPanel(  h2("Williams Portfolio"),
                        DT::dataTableOutput("mytable")),
         mainPanel(
-            plotlyOutput("plot2"))))
+            plotOutput("plot2"))))
 
 server <- function(input, output) {
     
@@ -50,14 +50,14 @@ server <- function(input, output) {
    
     
     
-    output$plot2 <- renderPlotly({
+    output$plot2 <- renderPlot({
         print(
-            ggplotly(
+            
                 ggplot(prices) + aes(x = date, y = adjusted, color = symbol) +
                     geom_line(size=0.2) + facet_wrap(~symbol, scales = "free") + 
                     facet_wrap(~symbol,scales = 'free_y') +
                     theme_bw() +geom_smooth(formula = y~x, method = loess, size=.3) + ggtitle("Williams Portfolio")+
-                    theme(axis.text.x = element_text(angle = 90)) ))
+                    theme(axis.text.x = element_text(angle = 90) ))
         
     })
     
